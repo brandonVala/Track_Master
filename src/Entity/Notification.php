@@ -22,7 +22,6 @@ class Notification
      * @Assert\NotBlank(message="The message cannot be blank.")
      */
     private $message;
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="notifications")
      * @ORM\JoinColumn(nullable=false)

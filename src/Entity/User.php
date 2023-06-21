@@ -68,22 +68,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Geofence", mappedBy="user", cascade={"persist", "remove"})
-     * @Assert\Valid()
-     */
+    * @ORM\OneToMany(targetEntity="App\Entity\Geofence", mappedBy="user", cascade={"persist", "remove"})
+    * @Assert\Valid()
+    */
     private $geofences;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="user", cascade={"persist", "remove"})
-     * @Assert\Valid()
-     */
+    * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="user", cascade={"persist", "remove"})
+    * @Assert\Valid()
+    */
     private $notifications;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Location", mappedBy="user", cascade={"persist", "remove"})
-     * @Assert\Valid()
-     */
-    private $location;
+    * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="user", cascade={"persist", "remove"})
+    * @Assert\Valid()
+    */
+    private $locations;
+
 
     public function __construct()
     {

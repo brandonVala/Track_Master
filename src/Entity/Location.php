@@ -42,9 +42,9 @@ class Location
      * )
      */
     private $longitude;
-
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="location")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="locations")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
