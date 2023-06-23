@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="This email is already in use.")
  */
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
@@ -68,23 +69,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     /**
-    * @ORM\OneToMany(targetEntity="App\Entity\Geofence", mappedBy="user", cascade={"persist", "remove"})
-    * @Assert\Valid()
-    */
+     * @ORM\OneToMany(targetEntity="App\Entity\Geofence", mappedBy="user", cascade={"persist", "remove"})
+     * @Assert\Valid()
+     */
     private $geofences;
 
     /**
-    * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="user", cascade={"persist", "remove"})
-    * @Assert\Valid()
-    */
+     * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="user", cascade={"persist", "remove"})
+     * @Assert\Valid()
+     */
     private $notifications;
 
     /**
-    * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="user", cascade={"persist", "remove"})
-    * @Assert\Valid()
-    */
+     * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="user", cascade={"persist", "remove"})
+     * @Assert\Valid()
+     */
     private $locations;
-
 
     public function __construct()
     {
@@ -93,6 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isAdmin = false;
         $this->geofences = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->locations = new ArrayCollection();
     }
 
     // Getters and Setters
@@ -131,10 +132,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password, UserPasswordEncoderInterface $encoder): self
+    public function setPassword(string $password): self
     {
-        $encodedPassword = $encoder->encodePassword($this, $password);
-        $this->password = $encodedPassword;
+        $this->password = $password;
 
         return $this;
     }
@@ -259,19 +259,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLocation(): ?Location
+    /**
+     * @return Collection|Location[]
+     */
+    public function getLocations(): Collection
     {
-        return $this->location;
+        return $this->locations;
     }
 
-    public function setLocation(?Location $location): self
+    public function addLocation(Location $location): self
     {
-        $this->location = $location;
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->setUser($this);
+        }
 
-        // set (or unset) the owning side of the relation if necessary
-        $newUser = $location === null ? null : $this;
-        if ($newUser !== $location->getUser()) {
-            $location->setUser($newUser);
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        if ($this->locations->contains($location)) {
+            $this->locations->removeElement($location);
+            // set the owning side to null (unless already changed)
+            if ($location->getUser() === $this) {
+                $location->setUser(null);
+            }
         }
 
         return $this;
