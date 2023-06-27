@@ -14,7 +14,7 @@
         <div class="logo">
             <img class="responsive-img" src="{{asset('img/app/Logo1.jpeg')}}" alt="">
         </div>
-
+        <div id="form" style="margin-bottom: 20px;">
         <form method="post">
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -41,15 +41,15 @@
                 </div>
 
                 <div>
-                    <input type="hidden" name="_target_path" value="/mapa "/>
+                    <input type="hidden" name="_target_path" value="/map"/>
                     <div>
                         <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
-                        <a href="#">Lost your password?</a>
-                        <a href="#">Register</a>
+                        <a href="{{ path('app_register') }}">Register</a>
                     </div>
                 </div>
             </div>
         </form>
+        </div>
     </section>
 </div>
 

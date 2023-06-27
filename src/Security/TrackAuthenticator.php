@@ -47,7 +47,7 @@ class TrackAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // Redirige al usuario a una ruta específica después de iniciar sesión correctamente
-        return new RedirectResponse($this->urlGenerator->generate('app_homepage'));
+        return new RedirectResponse($this->urlGenerator->generate('app_map'));
     }
 
     protected function getLoginUrl(Request $request): string

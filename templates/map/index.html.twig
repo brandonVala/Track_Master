@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<head>
+    <title>Mapa!</title>
+    <link Set-Cookie: unpkg.com=1; Max-Age=2600000; Secure />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+        integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
+
+    <style>
+        .leaflet-draw-actions {
+            display: none;
+        }
+
+        .leaflet-draw-toolbar:not(.leaflet-touch) .leaflet-draw-edit-remove {
+            display: block;
+        }
+
+        .leaflet-draw-toolbar-top {
+            top: 65px;
+        }
+
+        .leaflet-draw-edit-edit {
+            display: none;
+        }
+
+        .leaflet-draw-toolbar:not(.leaflet-touch) .leaflet-draw-edit-edit {
+            display: block;
+        }
+    </style>
+</head>
+
+<nav>
+    <div class="nav-wrapper blue darken-3">
+        <a class="brand-logo">Mapa de Visualizacion</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/logout">Cerrar sesión</a></li>
+            <li><a href="/test">Información</a></li>
+        </ul>
+    </div>
+</nav>
+
+<body>
+    <div id="myMap" style="height: 600px"></div>
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+        integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+
+    <script>
+        let myMap;
+        let myLayer;
+        let drawnItems;
+
+        renderMapa();
+
+        function renderMapa() {
+            myMap = L.map('myMap').setView([19.45992, -97.6742], 16);
+
+            var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            });
+            osm.addTo(myMap);
+
+            myMap.on('locationfound', (e) => console.log('found', e));
+
+            myMap.locate();
+
+            drawnItems = new L.FeatureGroup();
+            myMap.addLayer(drawnItems);
+
+            var drawControl = new L.Control.Draw({
+                edit: {
+                    featureGroup: drawnItems,
+                    remove: true
+                },
+                draw: {
+                    polygon: {
+                        allowIntersection: false,
+                        drawError: {
+                            color: '#b00b00',
+                            timeout: 1000
+                        },
+                        shapeOptions: {
+                            color: '#3388ff'
+                        },
+                        showArea: true
+                    },
+                    polyline: false,
+                    rectangle: false,
+                    circle: false,
+                    marker: false
+                }
+            });
+            myMap.addControl(drawControl);
+
+            myMap.on(L.Draw.Event.CREATED, function (e) {
+                var layer = e.layer;
+                drawnItems.addLayer(layer);
+                console.log(layer.toGeoJSON());
+            });
+
+            myMap.on('draw:edited', function (e) {
+                var layers = e.layers;
+                layers.eachLayer(function (layer) {
+                    console.log(layer.toGeoJSON());
+                });
+            });
+
+            myMap.on('draw:deleted', function (e) {
+                var layers = e.layers;
+                layers.eachLayer(function (layer) {
+                    console.log(layer.toGeoJSON());
+                });
+            });
+
+            function update() {
+                myLayer = L.layerGroup();
+                setInterval(function () {
+                    myLayer.clearLayers();
+                    fetch('/locations')
+                        .then((response) => response.json())
+                        .then((data) => {
+                            for (location of data['locations']) {
+                                myMarker = L.marker([location.latitude, location.longitude], {
+                                    title: location.id,
+                                });
+                                myLayer.addLayer(myMarker);
+                            }
+                            myLayer.addTo(myMap);
+                        });
+                }, 2000);
+            }
+
+            update();
+        }
+    </script>
+
+</body>
+
+{% endblock %}

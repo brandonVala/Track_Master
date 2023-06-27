@@ -16,3 +16,7 @@ login:
 resgister: 
     path: /register
     controller: App\Controller\RegistrationController::register
+
+map:
+    path: /map
+    controller: App\Controller\MapController::index
