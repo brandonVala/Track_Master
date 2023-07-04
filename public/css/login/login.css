@@ -1,18 +1,10 @@
 /* Estilos GENERALES */
 body {
-    background-image: url("")no-repeat center;
-			-webkit-background-size: cover;
-			-moz-background-size: cover;
-			-o-background-size: cover;
-			background-size: cover;
-			-webkit-transition: all .2s ease-in-out;
-			-moz-transition: all .2s ease-in-out;
-			-o-transition: all .2s ease-in-out;
-			transition: all .2s ease-in-out;
-			position: relative;
-
+    background-size: cover;
+    transition: all 0.2s ease-in-out;
+    position: relative;
 }
-/* Estilos DE ENCABEZADOS*/
+/* Estilos DE ENCABEZADOS */
 h1 {
     font-size: 28px;
 }
@@ -39,7 +31,6 @@ h5,
 h6 {
     color: #563d64;
 }
-
 /* Estilos ADICIONALES PARA ELEMENTOS DE TEXTO */
 small {
     font-size: 10px;
@@ -73,21 +64,44 @@ a:hover {
     margin-left: 15px;
 }
 
-
 /* Estilos para el contenedor principal */
 .container {
     position: relative;
-    height: 100vh; /* Establece la altura del contenedor al 100% del viewport */
+    height: 100vh;
     display: flex;
-    text-align: center; /* Alinea el contenido al centro */
-    align-items: center; /* Centra verticalmente el contenido */
-    justify-content: center; /* Centra horizontalmente el contenido */
+    text-align: center;
+    align-items: center;
+    justify-content: center;
     width: 900px;
 }
-/* Estilos para contenido especifico*/
+
+/* Estilos para el logotipo */
+.logo {
+    position: relative;
+    top: 20px;
+    width: 150px;
+    height: 150px;
+    margin: auto;
+    background-image: url("") no-repeat center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.logo img {
+    width: 100px;
+    height: 100px;
+}
+
+/* Estilos para contenido especifico */
 #content {
     background: #f9f9f9;
-    background: -moz-linear-gradient(top, rgba(248, 248, 248, 1) 0%, rgba(249, 249, 249, 1) 100%);
+    background: linear-gradient(top, rgba(248, 248, 248, 1) 0%, rgba(249, 249, 249, 1) 100%);
     background: -webkit-linear-gradient(top, rgba(248, 248, 248, 1) 0%, rgba(249, 249, 249, 1) 100%);
     background: -o-linear-gradient(top, rgba(248, 248, 248, 1) 0%, rgba(249, 249, 249, 1) 100%);
     background: linear-gradient(top, rgba(248, 248, 248, 1) 0%, rgba(249, 249, 249, 1) 100%);
@@ -105,14 +119,17 @@ a:hover {
     text-shadow: 0 1px 0 #fff;
     width: 400px;
 }
-/*Estilos para el encabezado (h1) dentro del elemento con el ID content*/
+
+/* Estilos para el encabezado (h1) dentro del elemento con el ID content */
 #content h1 {
     color: #4d7ec9;
     font: bold 25px Helvetica, Arial, sans-serif;
     letter-spacing: -0.05em;
     line-height: 20px;
     margin: 10px 0 30px;
+    position: relative;
 }
+
 #content h1:before,
 #content h1:after {
     content: "";
@@ -123,14 +140,15 @@ a:hover {
 }
 
 #content h1:after {
-    background: rgb(126,126,126);
-	background: -moz-linear-gradient(left,  rgba(126,126,126,1) 0%, rgba(255,255,255,1) 100%);
-	background: -webkit-linear-gradient(left,  rgba(126,126,126,1) 0%,rgba(255,255,255,1) 100%);
-	background: -o-linear-gradient(left,  rgba(126,126,126,1) 0%,rgba(255,255,255,1) 100%);
-	background: -ms-linear-gradient(left,  rgba(126,126,126,1) 0%,rgba(255,255,255,1) 100%);
-	background: linear-gradient(left,  rgba(126,126,126,1) 0%,rgba(255,255,255,1) 100%);
-    right: 0
+    background: rgb(126, 126, 126);
+    background: -moz-linear-gradient(left, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+    background: -webkit-linear-gradient(left, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+    background: -o-linear-gradient(left, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+    background: -ms-linear-gradient(left, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+    background: linear-gradient(left, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+    right: 0;
 }
+
 #content h1:before {
     background: rgb(126, 126, 126);
     background: -moz-linear-gradient(right, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
@@ -153,10 +171,10 @@ a:hover {
     content: "";
     display: block;
     height: 100%;
-    left: -1px;
     position: absolute;
     width: 100%;
 }
+
 #content:after {
     -webkit-transform: rotate(2deg);
     -moz-transform: rotate(2deg);
@@ -177,98 +195,99 @@ a:hover {
     z-index: -2;
 }
 
-#form {
-    display: -webkit-flex;
-
-    -webkit-justify-content: space-around;
-    justify-content: space-around;
-
-    -webkit-flex-wrap: wrap;
-    flex-wrap: wrap;
-
-    margin: 0 auto;
-}
-
-/* Estilos para el logotipo */
-.logo {
-    position: relative;
-			top: 20px;
-			width: 150px;
-			height: 150px;
-			margin: auto;
-			background-image: url("") no-repeat center;
-			-webkit-background-size: cover;
-			-moz-background-size: cover;
-			-o-background-size: cover;
-			background-size: cover;
-			-webkit-transition: all .2s ease-in-out;
-			-moz-transition: all .2s ease-in-out;
-			-o-transition: all .2s ease-in-out;
-			transition: all .2s ease-in-out;
-
-}
-
-.logo img {
-    width: 100px;
-    height: 100px;
-}
-
-/* Estilos para los mensajes de error del formulario */
-.form-error {
-    /* Estilos de los mensajes de error */
-}
-
-/* Estilos para los campos de formulario */
-.form-group {
-    /* Estilos del grupo de formulario */
-    
-}
-
-.form-group label {
-    /* Estilos de las etiquetas de formulario */
-}
-
-#content form input[type="text"]{
-    /* Estilos de los campos texto*/
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
-    -o-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0,0,0,0.08) inset;
-    -moz-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0,0,0,0.08) inset;
-    -ms-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0,0,0,0.08) inset;
-    -o-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0,0,0,0.08) inset;
-    box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0,0,0,0.08) inset;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -ms-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-    color: #534f4f;
-    font: 13px Helvetica, Arial, sans-serif;
-    padding: 10px 10px 20px 20px;
- /* Agrega esta línea para establecer un ancho del 100% */
-    height: 20px;  
-    width: 200px; /* Establece el ancho deseado para los campos de nombre */
-
-}
-input[type="password"] {
+form {
+    margin: 10px;
+    padding: 20px;
     border-radius: 5px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s, border-color 0.3s;
-    appearance: none;
-    color: #333;
-    padding: 8px;
+    opacity: 1;
+}
+
+/* Estilos para las etiquetas de los campos */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+/* Estilos para los campos de texto */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: auto;
+    display: inline-block;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box; /* Asegura que el padding y border se incluyan en el ancho total */
+    font-size: 16px; /* Tamaño de fuente */
+    color: #333; /* Color del texto */
+    background-color: #fff; /* Color de fondo */
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"].valid,
+input[type="email"].valid,
+input[type="password"].valid {
+    border-color: green;
+}
+
+input[type="text"].invalid,
+input[type="email"].invalid,
+input[type="password"].invalid {
+    border-color: red;
+}
+
+
+/* Estilos para los mensajes de error */
+span.help-block {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Estilos para el botón de registro */
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* Estilos para el formulario de inicio de sesión */
+#login-form {
+    margin: 0 auto;
+    width: 300px;
+}
+
+#login-form h2 {
+    background-color: #f95252;
+    color: #ffffff;
+    font-size: 20px;
+    padding: 10px;
+    text-align: center;
+}
+
+#login-form .form-group {
+    margin-bottom: 15px;
+}
+
+#login-form .form-group input {
     height: 30px;
-    width: 200px; /* Establece el ancho deseado para los campos de contraseña */
+    width: 100%;
+    padding: 5px;
 }
 
-
-
-/* Estilos para el enlace de inicio de sesión */
-.form-group a {
-    /* Estilos del enlace de inicio de sesión */
-    color: blue;
-    text-decoration: none;
+#login-form .form-group label {
+    color: #555555;
+    font-size: 14px;
+    font-weight: bold;
 }
+
+#login-form .form-group a {
+    color: #888888;
+    font-size: 12px;
+}
+

@@ -2,7 +2,8 @@
 
 namespace App\Security;
 
-use Symfony\Bundle\SecurityBundle\Security;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class TrackAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -21,8 +24,13 @@ class TrackAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    private EntityManagerInterface $entityManager;
+    private UrlGeneratorInterface $urlGenerator;
+
+    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator)
     {
+        $this->entityManager = $entityManager;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function authenticate(Request $request): Passport
@@ -30,6 +38,19 @@ class TrackAuthenticator extends AbstractLoginFormAuthenticator
         $email = $request->request->get('email', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $email);
+
+        $userRepository = $this->entityManager->getRepository(User::class);
+        $user = $userRepository->findOneBy(['email' => $email]);
+
+        if (!$user) {
+            // El usuario no existe, se puede mostrar un mensaje de error
+            throw new RouteNotFoundException('El usuario no existe.');
+
+            // O redirigir al usuario a una página de inicio de sesión
+            // return new RedirectResponse($this->urlGenerator->generate(self::LOGIN_ROUTE));
+        }
+
+        $nombreUsuario = $user->getName();
 
         return new Passport(
             new UserBadge($email),

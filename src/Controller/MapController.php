@@ -15,7 +15,7 @@ class MapController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER');
         
         return $this->render('map/index.html.twig', [
-            'controller_name' => 'MapController',
+            'controller_name' => '  MapController',
         ]);
     }
 }

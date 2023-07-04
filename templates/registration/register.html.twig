@@ -1,11 +1,17 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}
-    Register
-{% endblock %}
-
-{% block body %}
-<body class="d-flex" style="background-image: url({{asset('img/app/azul.jpg')}});">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="shortcut icon" href="#">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="{{ asset('css/login/materialize.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/login/login.css') }}">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+</head>
+<body class="d-flex" style="background-image: url({{ asset('img/app/azul.jpg') }});">
     <div class="container">
         <section id="content">
             <h1>Track Master</h1>
@@ -24,7 +30,8 @@
                         {{ form_widget(registrationForm.name, {
                             'attr': {
                                 'required': true,
-                                'autofocus': true
+                                'autofocus': true,
+                                
                             }
                         }) }}
                         {{ form_errors(registrationForm.name) }}
@@ -42,6 +49,7 @@
                     <div class="input-field col s12 m12">
                         <i class="material-icons prefix">lock</i>
                         <label for="{{ registrationForm.plainPassword.vars.id }}">Password</label>
+
                         {{ form_widget(registrationForm.plainPassword, {
                             'attr': {
                                 'autocomplete': 'new-password',
@@ -51,10 +59,10 @@
                         {{ form_errors(registrationForm.plainPassword) }}
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-lg btn-primary" type="submit">Register</button>
+                        <button type="submit">Register</button>
                     </div>
                     <br>
-                    <div class="form-group">
+                    <div class="orm">
                         <a href="{{ path('app_login') }}">Already have an account? Log in</a>
                     </div>
                     {{ form_end(registrationForm) }}
@@ -62,5 +70,9 @@
             </div>
         </section>
     </div>
-    </body>
-{% endblock %}
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="{{ asset('js/login/materialize.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
