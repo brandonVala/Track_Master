@@ -33,9 +33,13 @@ body {
 .media-hover:hover {
   background-color: #f5f5f5;
 }
-.all-tittles {
+.all-tittles{
   font-family: "Titulos" !important;
+  color: #fff;
+  text-decoration: underline; /* Subrayado */
+  text-transform: uppercase; /* Mayúsculas */
 }
+
 .center-box {
   margin: 0 auto;
 }
@@ -135,6 +139,7 @@ span.label-mhover {
   top: 0;
   left: 0;
   z-index: 7;
+  
 }
 .navbar-user-top > ul {
   height: 55px;
@@ -196,7 +201,7 @@ span.label-mhover {
   right: 0;
   z-index: 1;
   width: 80%;
-  background-color: #fff;
+  background-color: #f3f0f0;
 }
 .nav-lateral-list-menu ul li {
   margin: 0;
@@ -243,28 +248,92 @@ span.label-mhover {
   color: #fff;
 }
 .nav-lateral-list-menu ul li ul {
-  background-color: rgb(43, 61, 81);
+  background-color: rgb(73, 110, 153);
   display: none;
 }
 .nav-lateral-list-menu ul li div {
   cursor: pointer;
 }
 .nav-lateral-list-menu ul li ul li a {
-  padding-left: 30px;
+  padding-left: 20px;
 }
+/* Agregados por mi Contenedor mapa */
+
+.container{
+  background-color: #f8f4f4;
+  width: auto;
+  height: 600px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px; /* Ajusta el valor según el margen superior deseado */
+  border-radius: 10px;
+  /*  */
+  box-shadow: 0 20px 50px rgb(23, 32, 90);
+  border: 2px solid #42678b;
+
+}
+/* Container del mapa */
+.container::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.container::before,
+.container::after {
+  content: " ";
+  display: table;
+}
+
+.container {
+  zoom: 1;
+}
+/* header de del container */
+.custom-header {
+  background-color: #f8f4f4;
+  border: 2px solid #f8f4f4;
+  width: auto;
+  height: auto;
+  padding: 5px;
+  border-radius: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  
+}
+
+.custom-title {
+  font-size: 30px;
+  color: #333;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  
+}
+/*Estilos del mapa*/
+.map-container {
+  height: 520px;
+  border-radius: 10px;
+  /* Otros estilos personalizados */
+  /* ANIMACION */
+  background: #111845a6;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgb(23, 32, 90);
+  border: 2px solid #42678b;
+  color: white;
+}
+
 /*Pie de pagina================*/
 .footer {
   background-color: #42678b;
   height: auto;
   color: #fff;
   padding-top: 20px;
-  margin-top: 70px;
+  margin-top: 20px;
 }
 .footer-copyright {
   height: 45px;
-  line-height: 45px;
+  line-height: 30px;
   color: #fff;
-  text-align: center;
   font-size: 17px;
   background-color: #42678b;
 }
@@ -638,4 +707,24 @@ input.material-control:focus ~ .highlight {
   .navbar-lateral {
     display: inherit !important;
   }
+}
+
+.leaflet-draw-actions {
+  display: none;
+}
+
+.leaflet-draw-toolbar:not(.leaflet-touch) .leaflet-draw-edit-remove {
+  display: block;
+}
+
+.leaflet-draw-toolbar-top {
+  top: 65px;
+}
+
+.leaflet-draw-edit-edit {
+  display: none;
+}
+
+.leaflet-draw-toolbar:not(.leaflet-touch) .leaflet-draw-edit-edit {
+  display: block;
 }

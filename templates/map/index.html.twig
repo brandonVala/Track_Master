@@ -1,125 +1,292 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+Track Map
+{% endblock %}
 
-    {% block title %}Track Map{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+<!-- Agregar contenido adicional a los css -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
 
-    {% block stylesheets %}
-        {{ parent() }}
-		<!-- Agregar contenido adicional a los css -->
-    {% endblock %}
+{% endblock %}
 
-    {% block navbar %}
-        {{ parent() }}
-        <!-- Agregar contenido adicional al bloque navbar si es necesario -->
-		<div class="full-reset nav-lateral-list-menu">
-				<ul class="list-unstyled">
-					<li>
-						<a href="../html/home.html">
-							<i class="zmdi zmdi-home zmdi-hc-fw"></i>
-							&nbsp;&nbsp; Inicio
-						</a>
-					</li>
-					<li>
-						<div class="dropdown-menu-button">
-							<i class="zmdi zmdi-case zmdi-hc-fw"></i>
-							&nbsp;&nbsp; Administración
-							<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i>
-						</div>
-						<ul class="list-unstyled">
-							<li>
-								<a href="category.html">
-									<i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>
-									&nbsp;&nbsp; Nueva categoría
-								</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<div class="dropdown-menu-button">
-							<i class="zmdi zmdi-account-add zmdi-hc-fw"></i>
-							&nbsp;&nbsp; Registro de usuarios
-							<i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i>
-						</div>
-						<ul class="list-unstyled">
-							<li>
-								<a href="admin.html">
-									<i class="zmdi zmdi-face zmdi-hc-fw"></i>
-									&nbsp;&nbsp; Nuevo administrador
-								</a>
-							</li>
-							<li>
-								<a href="personal.html">
-									<i class="zmdi zmdi-male-female zmdi-hc-fw"></i>
-									&nbsp;&nbsp; Nuevo personal administrativo
-								</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="report.html">
-							<i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>
-							&nbsp;&nbsp; Reportes y estadísticas
-						</a>
-					</li>
-					<li>
-						<a href="advancesettings.html">
-							<i class="zmdi zmdi-wrench zmdi-hc-fw"></i>
-							&nbsp;&nbsp; Configuraciones avanzadas
-						</a>
-					</li>
-				</ul>
-			</div>
-    {% endblock %}
+{% block navbar %}
+{{ parent() }}
+<!-- Agregar contenido adicional al bloque navbar si es necesario -->
+<div class="full-reset nav-lateral-list-menu">
+    <ul class="list-unstyled">
+        <li>
+            <a href="{{ path('map') }}">
+                <i class="zmdi zmdi-home zmdi-hc-fw"></i>
+                &nbsp;&nbsp; Inicio
+            </a>
+        </li>
+        <li>
+            <div class="dropdown-menu-button">
+                <i class="zmdi zmdi-case zmdi-hc-fw"></i>
+                &nbsp;&nbsp; Administración
+                <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i>
+            </div>
+            <ul class="list-unstyled">
+                <li>
+                    <a href="category.html">
+                        <i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>
+                        &nbsp;&nbsp; Nueva categoría
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="dropdown-menu-button">
+                <i class="zmdi zmdi-account-add zmdi-hc-fw"></i>
+                &nbsp;&nbsp; Registro de usuarios
+                <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw"></i>
+            </div>
+            <ul class="list-unstyled">
+                <li>
+                    <a href="admin.html">
+                        <i class="zmdi zmdi-face zmdi-hc-fw"></i>
+                        &nbsp;&nbsp; Nuevo administrador
+                    </a>
+                </li>
+                <li>
+                    <a href="admin.html">
+                        <i class="zmdi zmdi-face zmdi-hc-fw"></i>
+                        &nbsp;&nbsp; Nuevo Usuario
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="report.html">
+                <i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>
+                &nbsp;&nbsp; Reportes y estadísticas
+            </a>
+        </li>
+        <li>
+            <a href="advancesettings.html">
+                <i class="zmdi zmdi-wrench zmdi-hc-fw"></i>
+                &nbsp;&nbsp; Configuraciones avanzadas
+            </a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
 
-    {% block topbar %}
-        {{ parent() }}
-        <!-- Agregar contenido adicional al bloque topbar si es necesario -->
-		<ul
-						class="list-unstyled full-reset">
-						<!-- Elemento 1: Imagen de perfil del usuario -->
-						<figure>
-							<img src="../img/User.png" alt="user-picture" class="img-responsive img-circle center-box">
-						</figure>
-						<!-- Elemento 2: Nombre del usuario (condicional) -->
-						{% if app.user %}
-							<li style="color:#fff; cursor:default;">
-								<span class="all-tittles">
-									{{ app.user.name }}
-								</span>
-							</li>
-						{% endif %}
-						<!-- Elemento 3: Botón de salida del sistema -->
-						<li class="tooltips-general exit-system-button" data-placement="bottom" title="Salir del sistema">
-									<i class="zmdi zmdi-power"></i>
-						</li>
-						<!-- Elemento 4: Ícono de ayuda -->
-						<li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
-							<i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
-						</li>
-						<!-- Elemento 5: Botón de menú móvil -->
-						<li class="mobile-menu-button visible-xs" style="float: left !important;">
-							<i class="zmdi zmdi-menu"></i>
-						</li>
-					</ul>
+{% block topbar %}
+{{ parent() }}
+<!-- Agregar contenido adicional al bloque topbar si es necesario -->
+<ul class="list-unstyled full-reset">
+    <!-- Elemento 1: Imagen de perfil del usuario -->
+    <figure>
+        <img src="{{ asset('img/vista/User.png') }}" alt="user-picture" class="img-responsive img-circle center-box">
+    </figure>
+    <!-- Elemento 2: Nombre del usuario (condicional) -->
+    {% if app.user %}
+        <li style="color:#fff; cursor:default; ">
+            <span class="all-tittles">
+                {{ app.user.name }}
+            </span>
+        </li>
+    {% endif %}
+    <!-- Elemento 3: Botón de salida del sistema -->
+    <li class="tooltips-general exit-system-button" data-placement="bottom" title="Salir del sistema">
+    <i class="zmdi zmdi-power"></i>
+</li>
+    <!-- Elemento 4: Ícono de ayuda -->
+    <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+        <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+    </li>
+    <!-- Elemento 5: Botón de menú móvil -->
+    <li class="mobile-menu-button visible-xs" style="float: left !important;">
+        <i class="zmdi zmdi-menu"></i>
+    </li>
+</ul>
+{% endblock %}
 
-    {% endblock %}
+{% block container %}
+{{ parent() }}
+<!-- Agregar contenido adicional al bloque container si es necesario -->
+<div class="container custom-header">
+    <h1 class="custom-title">Sistema de Rastreo <small>Administración</small></h1>
+</div>
+<!--DIV MAPA_-->
+<div id="myMap" class="map-container"></div>
+{% endblock %}
 
-    {% block container %}
-        {{ parent() }}
-        <!-- Agregar contenido adicional al bloque container si es necesario -->
-		<div class="page-header">
-            <h1 class="all-tittles">Sistema de Rastreo <small>Administración</small></h1>
+{% block modal %}
+{{ parent() }}
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+<h4 class="modal-title text-center all-tittles">
+    Ayuda del sistema
+</h4>
+</div>
+<div class="modal-body">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore dignissimos qui molestias ipsum officiis unde aliquid consequatur, accusamus delectus asperiores sunt. Quibusdam veniam ipsa accusamus error. Animi mollitia corporis iusto.
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal">
+        <i class="zmdi zmdi-thumb-up"></i>
+        &nbsp; De acuerdo
+    </button>
+    <!-- Agregar contenido adicional al bloque modal_content si es necesario -->
+{% endblock %}
+
+{% block footer %}
+{{ parent() }}
+<!-- Agregar contenido adicional al bloque footer si es necesario -->
+<div class="row">
+    <div class="col-xs-12 col-sm-6">
+        <h4 class="all-tittles">Acerca de</h4>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <h4 class="all-tittles">Desarrollador</h4>
+        <div class="footer-copyright ">
+            © Brandon Valadez Ortega
         </div>
-    {% endblock %}
+        <ul class="list-unstyled">
+            <li>
+                <i class="zmdi zmdi-facebook zmdi-hc-fw footer-social"></i>
+                <i class="zmdi zmdi-twitter zmdi-hc-fw footer-social"></i>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
 
-    {% block modal_content %}
-        {{ parent() }}
-        <!-- Agregar contenido adicional al bloque modal_content si es necesario -->
-    {% endblock %}
+{% block scripts %}
+{{ parent() }}
+<script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
-    {% block footer %}
-        {{ parent() }}
-        <!-- Agregar contenido adicional al bloque footer si es necesario -->
-    {% endblock %}
+<script>
+    // Esperar a que el documento esté cargado
+    document.addEventListener("DOMContentLoaded", function() {
+        // Obtener el botón de salida del sistema
+        var exitButton = document.querySelector('.exit-system-button');
 
+        // Agregar un evento de clic al botón de salida del sistema
+        exitButton.addEventListener('click', function() {
+            // Mostrar el popup de confirmación
+            var confirmLogout = confirm('Are you sure you want to logout?');
+
+            // Si el usuario confirma el cierre de sesión, ejecutar el logout
+            if (confirmLogout) {
+                // Crear una solicitud POST al endpoint de logout
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/logout', true);
+                xhr.onreadystatechange = function() {
+                    // Si la solicitud se ha completado y el estado es OK (200), redirigir a la página de inicio de sesión o a otra página deseada después de hacer logout
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        window.location.href = '/login';
+                    }
+                };
+                xhr.send();
+            }
+        });
+    });
+</script>
+
+
+<script>
+    let myMap;
+    let myLayer;
+    let drawnItems;
+
+    renderMapa();
+
+    function renderMapa() {
+        myMap = L.map('myMap').setView([19.45992, -97.6742], 16);
+
+        var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
+        osm.addTo(myMap);
+
+        myMap.on('locationfound', (e) => console.log('found', e));
+
+        myMap.locate();
+
+        drawnItems = new L.FeatureGroup();
+        myMap.addLayer(drawnItems);
+
+        var drawControl = new L.Control.Draw({
+            edit: {
+                featureGroup: drawnItems,
+                remove: true
+            },
+            draw: {
+                polygon: {
+                    allowIntersection: false,
+                    drawError: {
+                        color: '#b00b00',
+                        timeout: 1000
+                    },
+                    shapeOptions: {
+                        color: '#3388ff'
+                    },
+                    showArea: true
+                },
+                polyline: false,
+                rectangle: false,
+                circle: false,
+                marker: false
+            }
+        });
+        myMap.addControl(drawControl);
+
+        myMap.on(L.Draw.Event.CREATED, function (e) {
+            var layer = e.layer;
+            drawnItems.addLayer(layer);
+            console.log(layer.toGeoJSON());
+        });
+
+        myMap.on('draw:edited', function (e) {
+            var layers = e.layers;
+            layers.eachLayer(function (layer) {
+                console.log(layer.toGeoJSON());
+            });
+        });
+
+        myMap.on('draw:deleted', function (e) {
+            var layers = e.layers;
+            layers.eachLayer(function (layer) {
+                console.log(layer.toGeoJSON());
+            });
+        });
+
+        function update() {
+            myLayer = L.layerGroup();
+            setInterval(function () {
+                myLayer.clearLayers();
+                fetch('/locations')
+                    .then((response) => response.json())
+                    .then((data) => {
+                        for (location of data['locations']) {
+                            myMarker = L.marker([location.latitude, location.longitude], {
+                                title: location.id,
+                            });
+                            myLayer.addLayer(myMarker);
+                        }
+                        myLayer.addTo(myMap);
+                    });
+            }, 2000);
+        }
+        update();
+    }
+
+    // Deshabilitar el zoom con el scroll del mouse
+    myMap.scrollWheelZoom.disable();
+
+    // Deshabilitar el zoom con el touchpad
+    myMap.touchZoom.disable();
+</script>
+
+{% endblock %}

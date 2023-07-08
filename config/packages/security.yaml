@@ -19,7 +19,7 @@ security:
             custom_authenticator: App\Security\TrackAuthenticator
             logout:
                 path: app_logout
-                target: app_login
+                target: login
                 invalidate_session: true
 
     # Easy way to control access for large sections of your site
