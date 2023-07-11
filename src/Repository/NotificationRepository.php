@@ -23,21 +23,23 @@ class NotificationRepository extends ServiceEntityRepository
 
     public function save(Notification $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->_em->persist($entity);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->_em->flush();
         }
     }
 
     public function remove(Notification $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->_em->remove($entity);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->_em->flush();
         }
     }
+    
+
 
 //    /**
 //     * @return Notification[] Returns an array of Notification objects

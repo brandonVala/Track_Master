@@ -22,11 +22,18 @@ class Notification
      * @Assert\NotBlank(message="The message cannot be blank.")
      */
     private $message;
+    
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="notifications")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Admin", inversedBy="notifications")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $admin;
 
     // Getters and Setters
 
@@ -55,6 +62,18 @@ class Notification
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+    
+    public function getAdmin(): ?Admin
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(?Admin $admin): self
+    {
+        $this->admin = $admin;
 
         return $this;
     }

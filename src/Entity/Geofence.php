@@ -43,6 +43,12 @@ class Geofence
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Admin", inversedBy="geofences")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $admin;
+
     // Getters and Setters
 
     public function getId(): ?int
@@ -94,6 +100,18 @@ class Geofence
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAdmin(): ?Admin
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(?Admin $admin): self
+    {
+        $this->admin = $admin;
 
         return $this;
     }

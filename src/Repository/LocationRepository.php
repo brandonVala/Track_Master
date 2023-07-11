@@ -23,21 +23,22 @@ class LocationRepository extends ServiceEntityRepository
 
     public function save(Location $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->_em->persist($entity);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->_em->flush();
         }
     }
 
     public function remove(Location $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->_em->remove($entity);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->_em->flush();
         }
     }
+
 
 //    /**
 //     * @return Location[] Returns an array of Location objects

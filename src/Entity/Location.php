@@ -42,11 +42,18 @@ class Location
      * )
      */
     private $longitude;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="locations")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Admin", inversedBy="locations")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $admin;
 
     public function getId(): ?int
     {
@@ -85,6 +92,18 @@ class Location
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAdmin(): ?Admin
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(?Admin $admin): self
+    {
+        $this->admin = $admin;
 
         return $this;
     }

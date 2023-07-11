@@ -1,15 +1,10 @@
 <?php
-
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -27,14 +22,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="The name cannot be blank.")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Assert\NotBlank(message="The email cannot be blank.")
-     * @Assert\Email(message="The email is not valid.")
      */
     private $email;
 
@@ -59,41 +51,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $resetToken;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Admin", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $isAdmin;
+    private $admin;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\OneToMany(targetEntity="App\Entity\Device", mappedBy="user", cascade={"persist", "remove"})
      */
-    private $roles = [];
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Geofence", mappedBy="user", cascade={"persist", "remove"})
-     * @Assert\Valid()
-     */
-    private $geofences;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="user", cascade={"persist", "remove"})
-     * @Assert\Valid()
-     */
-    private $notifications;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="user", cascade={"persist", "remove"})
-     * @Assert\Valid()
-     */
-    private $locations;
+    private $devices;
 
     public function __construct()
     {
         $this->registeredAt = new \DateTime();
         $this->emailVerified = false;
-        $this->isAdmin = false;
-        $this->geofences = new ArrayCollection();
-        $this->notifications = new ArrayCollection();
-        $this->locations = new ArrayCollection();
+        $this->devices = new ArrayCollection();
     }
 
     // Getters and Setters
@@ -168,149 +140,77 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isAdmin(): bool
+    public function getAdmin(): ?Admin
     {
-        return $this->isAdmin;
+        return $this->admin;
     }
 
-    public function setIsAdmin(bool $isAdmin): self
+    public function setAdmin(?Admin $admin): self
     {
-        $this->isAdmin = $isAdmin;
-
-        return $this;
-    }
-
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-
-        // Ensure that every user has the "ROLE_USER" role by default
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
+        $this->admin = $admin;
 
         return $this;
     }
 
     /**
-     * @return Collection|Geofence[]
+     * @return Collection|Device[]
      */
-    public function getGeofences(): Collection
+    public function getDevices(): Collection
     {
-        return $this->geofences;
+        return $this->devices;
     }
 
-    public function addGeofence(Geofence $geofence): self
+    public function addDevice(Device $device): self
     {
-        if (!$this->geofences->contains($geofence)) {
-            $this->geofences[] = $geofence;
-            $geofence->setUser($this);
+        if (!$this->devices->contains($device)) {
+            $this->devices[] = $device;
+            $device->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeGeofence(Geofence $geofence): self
+    public function removeDevice(Device $device): self
     {
-        if ($this->geofences->contains($geofence)) {
-            $this->geofences->removeElement($geofence);
+        if ($this->devices->contains($device)) {
+            $this->devices->removeElement($device);
             // set the owning side to null (unless already changed)
-            if ($geofence->getUser() === $this) {
-                $geofence->setUser(null);
+            if ($device->getUser() === $this) {
+                $device->setUser(null);
             }
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection|Notification[]
-     */
-    public function getNotifications(): Collection
-    {
-        return $this->notifications;
-    }
-
-    public function addNotification(Notification $notification): self
-    {
-        if (!$this->notifications->contains($notification)) {
-            $this->notifications[] = $notification;
-            $notification->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeNotification(Notification $notification): self
-    {
-        if ($this->notifications->contains($notification)) {
-            $this->notifications->removeElement($notification);
-            // set the owning side to null (unless already changed)
-            if ($notification->getUser() === $this) {
-                $notification->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Location[]
-     */
-    public function getLocations(): Collection
-    {
-        return $this->locations;
-    }
-
-    public function addLocation(Location $location): self
-    {
-        if (!$this->locations->contains($location)) {
-            $this->locations[] = $location;
-            $location->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLocation(Location $location): self
-    {
-        if ($this->locations->contains($location)) {
-            $this->locations->removeElement($location);
-            // set the owning side to null (unless already changed)
-            if ($location->getUser() === $this) {
-                $location->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    // Methods required for implementing UserInterface
+    // Métodos requeridos para implementar UserInterface
 
     public function getSalt()
     {
-        // No salt is needed as passwords are hashed using a secure algorithm.
+        // No es necesario un salt ya que las contraseñas se hashean utilizando un algoritmo seguro.
         return null;
     }
 
     public function getUsername()
     {
-        // In this example, the username is the email.
+        // En este ejemplo, el nombre de usuario es el email.
         return $this->getEmail();
     }
 
     public function eraseCredentials()
     {
-        // No action is needed here as we don't store plain-text credentials.
+        // No es necesario realizar ninguna acción aquí, ya que no almacenamos las credenciales en texto plano.
     }
 
     public function getUserIdentifier(): string
     {
         return $this->getEmail();
     }
+
+    public function getRoles(): array
+    {    
+    // Aquí debes retornar el array de roles del usuario
+    return ['ROLE_USER'];
+    }
+
 }

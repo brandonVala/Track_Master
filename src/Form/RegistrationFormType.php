@@ -1,9 +1,10 @@
 <?php
-
+namespace App\Form;
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Admin;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,7 +25,14 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('email')
+            ->add('email', TextType::class, [
+                'label' => 'Email',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter your email',
+                    ]),
+                ],
+            ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
@@ -39,13 +47,19 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('isAdmin', CheckboxType::class, [
+                'label' => 'Is Admin',
+                'required' => false,
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Admin::class,
         ]);
     }
 }
+
+
