@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Entity;
 
+use App\Repository\GeofenceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -48,8 +48,6 @@ class Geofence
      * @ORM\JoinColumn(nullable=false)
      */
     private $admin;
-
-    // Getters and Setters
 
     public function getId(): ?int
     {

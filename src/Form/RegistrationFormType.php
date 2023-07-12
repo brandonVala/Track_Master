@@ -1,6 +1,5 @@
 <?php
 namespace App\Form;
-namespace App\Form;
 
 use App\Entity\Admin;
 use Symfony\Component\Form\AbstractType;
@@ -47,6 +46,14 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('phoneNumber', TextType::class, [
+                'label' => 'Phone Number',
+                'required' => false,
+            ])
+            ->add('profilePicture', TextType::class, [
+                'label' => 'Profile Picture',
+                'required' => false,
+            ])
             ->add('isAdmin', CheckboxType::class, [
                 'label' => 'Is Admin',
                 'required' => false,
@@ -61,5 +68,3 @@ class RegistrationFormType extends AbstractType
         ]);
     }
 }
-
-

@@ -17,7 +17,7 @@ app_logout:
     path: /logout
     controller: App\Controller\SecurityController::logout
 
-resgister: 
+register: 
     path: /register
     controller: App\Controller\RegistrationController::register
 

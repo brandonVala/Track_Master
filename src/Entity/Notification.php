@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Entity;
 
+use App\Repository\NotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -34,8 +34,6 @@ class Notification
      * @ORM\JoinColumn(nullable=true)
      */
     private $admin;
-
-    // Getters and Setters
 
     public function getId(): ?int
     {
@@ -78,3 +76,4 @@ class Notification
         return $this;
     }
 }
+

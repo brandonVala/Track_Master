@@ -31,7 +31,6 @@
                             'attr': {
                                 'required': true,
                                 'autofocus': true,
-                                
                             }
                         }) }}
                         {{ form_errors(registrationForm.name) }}
@@ -58,11 +57,29 @@
                         }) }}
                         {{ form_errors(registrationForm.plainPassword) }}
                     </div>
+                    <div class="input-field col s12 m12">
+                        <i class="material-icons prefix">phone</i>
+                        <label for="{{ registrationForm.phoneNumber.vars.id }}">Phone Number</label>
+
+                        {{ form_widget(registrationForm.phoneNumber, {
+                            'attr': {
+                                'required': true
+                            }
+                        }) }}
+                        {{ form_errors(registrationForm.phoneNumber) }}
+                    </div>
+                    <div class="input-field col s12 m12">
+                        <i class="material-icons prefix">image</i>
+                        <label for="{{ registrationForm.profilePicture.vars.id }}">Profile Picture</label>
+
+                        {{ form_widget(registrationForm.profilePicture) }}
+                        {{ form_errors(registrationForm.profilePicture) }}
+                    </div>
                     <div class="form-group">
                         <button type="submit">Register</button>
                     </div>
                     <br>
-                    <div class="orm">
+                    <div class="form">
                         <a href="{{ path('app_login') }}">Already have an account? Log in</a>
                     </div>
                     {{ form_end(registrationForm) }}
