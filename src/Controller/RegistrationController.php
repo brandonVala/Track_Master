@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Admin;
@@ -32,6 +31,7 @@ class RegistrationController extends AbstractController
             );
 
             $admin->setName($form->get('name')->getData());
+            $admin->setPhoneNumber($form->get('phoneNumber')->getData());
 
             $entityManager->persist($admin);
             $entityManager->flush();

@@ -1,9 +1,14 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\NotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
+// Importaciones adicionales
+use App\Entity\User;
+use App\Entity\Admin;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NotificationRepository")
@@ -22,15 +27,15 @@ class Notification
      * @Assert\NotBlank(message="The message cannot be blank.")
      */
     private $message;
-    
+
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="notifications")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="notifications")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
-    
+
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Admin", inversedBy="notifications")
+     * @ORM\ManyToOne(targetEntity=Admin::class, inversedBy="notifications")
      * @ORM\JoinColumn(nullable=true)
      */
     private $admin;
@@ -76,4 +81,3 @@ class Notification
         return $this;
     }
 }
-

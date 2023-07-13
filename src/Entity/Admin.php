@@ -1,17 +1,18 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\AdminRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AdminRepository")
+ * @ORM\Entity(repositoryClass=AdminRepository::class)
  * @UniqueEntity(fields={"email"}, message="This email is already in use.")
  */
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -109,25 +110,27 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     private $areaOfResponsibility;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="admin")
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="admin")
      */
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Geofence", mappedBy="admin", cascade={"persist", "remove"})
-     * @Assert\Valid()
+     * @ORM\OneToMany(targetEntity=Geofence::class, mappedBy="admin", cascade={"persist"})
      */
     private $geofences;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="admin", cascade={"persist", "remove"})
-     * @Assert\Valid()
+     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="admin", cascade={"persist"})
+     */
+    private $locations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="admin", cascade={"persist"})
      */
     private $notifications;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\IsTrue(message="You must be an admin")
      */
     private $isAdmin;
 
@@ -137,22 +140,9 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         $this->emailVerified = false;
         $this->users = new ArrayCollection();
         $this->geofences = new ArrayCollection();
+        $this->locations = new ArrayCollection();
         $this->notifications = new ArrayCollection();
-    }
-
-
-    // Getters and Setters
-
-    public function getIsAdmin(): ?bool
-    {
-        return $this->isAdmin;
-    }
-
-    public function setIsAdmin(?bool $isAdmin): self
-    {
-        $this->isAdmin = $isAdmin;
-
-        return $this;
+        $this->isAdmin = true;
     }
 
     public function getId(): ?int
@@ -228,16 +218,13 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-    
-        // Verificar si el rol "ROLE_ADMIN" ya está presente en el array
+
         if (!in_array('ROLE_ADMIN', $roles, true)) {
-            // Agregar el rol "ROLE_ADMIN" al array solo si no está presente
             $roles[] = 'ROLE_ADMIN';
         }
-    
+
         return array_unique($roles);
     }
-    
 
     public function setRoles(array $roles): self
     {
@@ -305,6 +292,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
     public function getActionHistory(): ?array
     {
         return $this->actionHistory;
@@ -361,7 +349,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->users;
     }
 
-    public function addUser(User $user): self
+    public function addUsers(User $user): self
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
@@ -371,11 +359,10 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeUsers(User $user): self
     {
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
-            // set the owning side to null (unless already changed)
             if ($user->getAdmin() === $this) {
                 $user->setAdmin(null);
             }
@@ -406,9 +393,38 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->geofences->contains($geofence)) {
             $this->geofences->removeElement($geofence);
-            // set the owning side to null (unless already changed)
             if ($geofence->getAdmin() === $this) {
                 $geofence->setAdmin(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Location[]
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): self
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->setAdmin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        if ($this->locations->contains($location)) {
+            $this->locations->removeElement($location);
+            if ($location->getAdmin() === $this) {
+                $location->setAdmin(null);
             }
         }
 
@@ -437,7 +453,6 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->notifications->contains($notification)) {
             $this->notifications->removeElement($notification);
-            // set the owning side to null (unless already changed)
             if ($notification->getAdmin() === $this) {
                 $notification->setAdmin(null);
             }
@@ -446,23 +461,18 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // Métodos requeridos para implementar UserInterface
-
     public function getSalt()
     {
-        // No es necesario un salt ya que las contraseñas se hashean utilizando un algoritmo seguro.
         return null;
     }
 
     public function getUsername()
     {
-        // En este ejemplo, el nombre de usuario es el email.
         return $this->getEmail();
     }
 
     public function eraseCredentials()
     {
-        // No es necesario realizar ninguna acción aquí, ya que no almacenamos las credenciales en texto plano.
     }
 
     public function getUserIdentifier(): string

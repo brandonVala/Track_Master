@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -6,6 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+// Importaciones adicionales
+use App\Entity\Admin;
+use App\Entity\Location;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -58,15 +65,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $admin;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Device", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="user", cascade={"persist", "remove"})
      */
-    private $devices;
+    private $locations;
 
     public function __construct()
     {
         $this->registeredAt = new \DateTime();
         $this->emailVerified = false;
-        $this->devices = new ArrayCollection();
+        $this->locations = new ArrayCollection();
     }
 
     // Getters and Setters
@@ -153,31 +160,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
     /**
-     * @return Collection|Device[]
+     * @return Collection|Location[]
      */
-    public function getDevices(): Collection
+    public function getLocations(): Collection
     {
-        return $this->devices;
+        return $this->locations;
     }
 
-    public function addDevice(Device $device): self
+    public function addLocation(Location $location): self
     {
-        if (!$this->devices->contains($device)) {
-            $this->devices[] = $device;
-            $device->setUser($this);
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeDevice(Device $device): self
+    public function removeLocation(Location $location): self
     {
-        if ($this->devices->contains($device)) {
-            $this->devices->removeElement($device);
+        if ($this->locations->contains($location)) {
+            $this->locations->removeElement($location);
             // set the owning side to null (unless already changed)
-            if ($device->getUser() === $this) {
-                $device->setUser(null);
+            if ($location->getUser() === $this) {
+                $location->setUser(null);
             }
         }
 
@@ -209,10 +217,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getRoles(): array
-    {    
-    // Aquí debes retornar el array de roles del usuario
-    return ['ROLE_USER'];
+    {
+        // En este ejemplo, el usuario solo tiene un rol "ROLE_USER".
+        return ['ROLE_USER'];
     }
-
 }
-

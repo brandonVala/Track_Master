@@ -1,9 +1,14 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\GeofenceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
+// Importaciones adicionales
+use App\Entity\User;
+use App\Entity\Admin;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GeofenceRepository")
@@ -38,13 +43,13 @@ class Geofence
     private $longitude;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="geofences")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="geofences")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Admin", inversedBy="geofences")
+     * @ORM\ManyToOne(targetEntity=Admin::class, inversedBy="geofences")
      * @ORM\JoinColumn(nullable=false)
      */
     private $admin;

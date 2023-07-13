@@ -1,9 +1,14 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\LocationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
+// Importaciones adicionales
+use App\Entity\User;
+use App\Entity\Admin;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
@@ -24,8 +29,7 @@ class Location
      * @Assert\Range(
      *     min=-90,
      *     max=90,
-     *     minMessage="The latitude must be at least {{ limit }}.",
-     *     maxMessage="The latitude cannot be greater than {{ limit }}."
+     *     notInRangeMessage="The latitude must be between {{ min }} and {{ max }}.",
      * )
      */
     private $latitude;
@@ -37,20 +41,19 @@ class Location
      * @Assert\Range(
      *     min=-180,
      *     max=180,
-     *     minMessage="The longitude must be at least {{ limit }}.",
-     *     maxMessage="The longitude cannot be greater than {{ limit }}."
+     *     notInRangeMessage="The longitude must be between {{ min }} and {{ max }}.",
      * )
      */
     private $longitude;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="locations")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="locations")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Admin", inversedBy="locations")
+     * @ORM\ManyToOne(targetEntity=Admin::class, inversedBy="locations")
      * @ORM\JoinColumn(nullable=true)
      */
     private $admin;

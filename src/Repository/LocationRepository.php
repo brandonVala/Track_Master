@@ -39,29 +39,16 @@ class LocationRepository extends ServiceEntityRepository
         }
     }
 
+    public function paginate(int $page, int $limit)
+    {
+        $queryBuilder = $this->createQueryBuilder('l')
+            ->orderBy('l.id', 'DESC')
+            ->getQuery();
 
-//    /**
-//     * @return Location[] Returns an array of Location objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        $paginator = new Paginator($queryBuilder);
+        $paginator->setCurrentPage($page);
+        $paginator->setItemCountPerPage($limit);
 
-//    public function findOneBySomeField($value): ?Location
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $paginator;
+    }
 }

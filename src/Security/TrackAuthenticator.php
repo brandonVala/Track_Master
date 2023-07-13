@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-use App\Entity\User;
+use App\Entity\Admin;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,18 +40,18 @@ class TrackAuthenticator extends AbstractLoginFormAuthenticator
 
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
-        $userRepository = $this->entityManager->getRepository(User::class);
-        $user = $userRepository->findOneBy(['email' => $email]);
+        $adminRepository = $this->entityManager->getRepository(Admin::class);
+        $admin = $adminRepository->findOneBy(['email' => $email]);
 
-        if (!$user) {
-            // El usuario no existe, se puede mostrar un mensaje de error
-            throw new RouteNotFoundException('El usuario no existe.');
+        if (!$admin) {
+            // El administrador no existe, se puede mostrar un mensaje de error
+            throw new RouteNotFoundException('El administrador no existe.');
 
             // O redirigir al usuario a una página de inicio de sesión
             // return new RedirectResponse($this->urlGenerator->generate(self::LOGIN_ROUTE));
         }
 
-        $nombreUsuario = $user->getName();
+        $nombreUsuario = $admin->getName();
 
         return new Passport(
             new UserBadge($email),
