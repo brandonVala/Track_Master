@@ -9,9 +9,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 // Importaciones adicionales
 use App\Entity\User;
 use App\Entity\Admin;
+use App\Entity\Geofence;
+use App\Entity\Location;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\NotificationRepository")
+ * @ORM\Entity(repositoryClass=NotificationRepository::class)
  */
 class Notification
 {
@@ -39,6 +41,18 @@ class Notification
      * @ORM\JoinColumn(nullable=true)
      */
     private $admin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Geofence::class)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $geofence;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Location::class)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $location;
 
     public function getId(): ?int
     {
@@ -77,6 +91,30 @@ class Notification
     public function setAdmin(?Admin $admin): self
     {
         $this->admin = $admin;
+
+        return $this;
+    }
+
+    public function getGeofence(): ?Geofence
+    {
+        return $this->geofence;
+    }
+
+    public function setGeofence(?Geofence $geofence): self
+    {
+        $this->geofence = $geofence;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }

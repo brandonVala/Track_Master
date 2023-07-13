@@ -19,6 +19,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Security; // Agregada la importación
 
+
 class TrackAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;

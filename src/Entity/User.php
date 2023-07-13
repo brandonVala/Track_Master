@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -13,17 +12,19 @@ use Doctrine\Common\Collections\Collection;
 // Importaciones adicionales
 use App\Entity\Admin;
 use App\Entity\Location;
+use App\Entity\Notification;
+use App\Entity\Geofence;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="This email is already in use.")
  */
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -59,21 +60,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $resetToken;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Admin", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Admin::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      */
     private $admin;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="user")
      */
     private $locations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="user")
+     */
+    private $notifications;
 
     public function __construct()
     {
         $this->registeredAt = new \DateTime();
         $this->emailVerified = false;
         $this->locations = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     // Getters and Setters
@@ -186,6 +193,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($location->getUser() === $this) {
                 $location->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->contains($notification)) {
+            $this->notifications->removeElement($notification);
+            // set the owning side to null (unless already changed)
+            if ($notification->getUser() === $this) {
+                $notification->setUser(null);
             }
         }
 

@@ -19,8 +19,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -341,6 +341,18 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getIsAdmin(): bool
+    {
+        return $this->isAdmin;
+    }
+
+    public function setIsAdmin(bool $isAdmin): self
+    {
+        $this->isAdmin = $isAdmin;
+
+        return $this;
+    }
+
     /**
      * @return Collection|User[]
      */
@@ -349,7 +361,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->users;
     }
 
-    public function addUsers(User $user): self
+    public function addUser(User $user): self
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
@@ -359,7 +371,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeUsers(User $user): self
+    public function removeUser(User $user): self
     {
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);

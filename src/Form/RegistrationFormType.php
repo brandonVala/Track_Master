@@ -11,7 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -51,7 +50,6 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Phone Number',
                 'required' => false,
             ])
-            
             ->add('isAdmin', CheckboxType::class, [
                 'label' => 'Is Admin',
                 'required' => false,

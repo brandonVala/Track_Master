@@ -11,7 +11,7 @@ use App\Entity\User;
 use App\Entity\Admin;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\GeofenceRepository")
+ * @ORM\Entity(repositoryClass=GeofenceRepository::class)
  */
 class Geofence
 {
