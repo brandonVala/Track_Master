@@ -10,13 +10,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, SessionInterface $session): Response
     {
         $admin = new Admin();
         $form = $this->createForm(RegistrationFormType::class, $admin);
@@ -36,6 +38,9 @@ class RegistrationController extends AbstractController
             $entityManager->persist($admin);
             $entityManager->flush();
 
+            // Flash message
+            $session->getFlashBag()->add('success', 'Your account has been registered successfully. Please log in to continue.');
+
             // Redirect to login page
             $loginUrl = $urlGenerator->generate('app_login');
             return $this->redirect($loginUrl);
@@ -46,3 +51,4 @@ class RegistrationController extends AbstractController
         ]);
     }
 }
+

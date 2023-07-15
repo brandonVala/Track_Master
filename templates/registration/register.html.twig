@@ -2,14 +2,10 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>
-			Register
-		</title>
-		<link
-		rel="shortcut icon" href="#">
+		<title>Register</title>
+		<link rel="shortcut icon" href="#">
 		<!--Import Google Icon Font-->
-		<link
-		href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Import materialize.css-->
 		<link rel="stylesheet" href="{{ asset('css/login/materialize.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/login/login.css') }}">
@@ -18,86 +14,77 @@
 	
 	<body class="d-flex" style="background-image: url({{ asset('img/app/azul.jpg') }});">
 		<div class="container">
+
 			<section id="content">
-				<h1>
-					Track Master
-				</h1>
-				<h1>
-					Register
-				</h1>
+				<h1>Track Master</h1>
+				<h1>Register</h1>
 				<div class="logo">
 					<img src="{{ asset('img/app/Logo1.jpeg') }}" alt="Track Logo">
 				</div>
-
+		{% if app.session.flashBag.has('success') %}
+			<div class="alert alert-success">
+        {{ app.session.flashBag.get('success')[0] }}
+			</div>
+		{% endif %}
 				<div id="form" style="margin-bottom: 20px;">
 					{{ form_errors(registrationForm) }}
 					<form method="post" action="{{ path('app_register') }}">
 						{{ form_start(registrationForm) }}
 						<div class="input-field col s12 m12">
-							<i class="material-icons prefix">
-								account_circle
-							</i>
-							<label for="{{ registrationForm.name.vars.id }}">
-								Name
-							</label>
+							<i class="material-icons prefix">account_circle</i>
+							<label for="{{ registrationForm.name.vars.id }}">Name</label>
 							{{ form_widget(registrationForm.name, {
-                            'attr': {
-                                'required': true,
-                                'autofocus': true,
-                            }
-                        }) }}
+								'attr': {
+									'required': true,
+									'autofocus': true,
+								}
+							}) }}
 							{{ form_errors(registrationForm.name) }}
 						</div>
 						<div class="input-field col s12 m12">
-							<i class="material-icons prefix">
-								email
-							</i>
-							<label for="{{ registrationForm.email.vars.id }}">
-								Email
-							</label>
+							<i class="material-icons prefix">email</i>
+							<label for="{{ registrationForm.email.vars.id }}">Email</label>
 							{{ form_widget(registrationForm.email, {
-                            'attr': {
-                                'required': true
-                            }
-                        }) }}
+								'attr': {
+									'required': true
+								}
+							}) }}
 							{{ form_errors(registrationForm.email) }}
 						</div>
 						<div class="input-field col s12 m12">
-							<i class="material-icons prefix">
-								lock
-							</i>
-							<label for="{{ registrationForm.plainPassword.vars.id }}">
-								Password
-							</label>
-
+							<i class="material-icons prefix">lock</i>
+							<label for="{{ registrationForm.plainPassword.vars.id }}">Password</label>
 							{{ form_widget(registrationForm.plainPassword, {
-                            'attr': {
-                                'autocomplete': 'new-password',
-                                'required': true
-                            }
-                        }) }}
+								'attr': {
+									'autocomplete': 'new-password',
+									'required': true
+								}
+							}) }}
 							{{ form_errors(registrationForm.plainPassword) }}
 						</div>
 						<div class="input-field col s12 m12">
-							<i class="material-icons prefix">
-								phone
-							</i>
-							<label for="{{ registrationForm.phoneNumber.vars.id }}">
-								Phone Number
-							</label>
-
+							<i class="material-icons prefix">phone</i>
+							<label for="{{ registrationForm.phoneNumber.vars.id }}">Phone Number</label>
 							{{ form_widget(registrationForm.phoneNumber, {
-                            'attr': {
-                                'required': true
-                            }
-                        }) }}
+								'attr': {
+									'required': true
+								}
+							}) }}
 							{{ form_errors(registrationForm.phoneNumber) }}
+						</div>
+						<div class="input-field col s12 m12">
+							<i class="material-icons prefix">business</i>
+							<label for="{{ registrationForm.areaOfResponsibility.vars.id }}">Area of Responsibility</label>
+							{{ form_widget(registrationForm.areaOfResponsibility, {
+								'attr': {
+									'required': false
+								}
+							}) }}
+							{{ form_errors(registrationForm.areaOfResponsibility) }}
 						</div>
 
 						<div class="form-group">
-							<button type="submit">
-								Register
-							</button>
+							<button type="submit">Register</button>
 						</div>
 						<div class="form-check mb-3">
 							<label class="form-check-label">
@@ -108,9 +95,7 @@
                         
 						{{ form_end(registrationForm) }}
 						<div class="form">
-							<a href="{{ path('app_login') }}">
-								Already have an account? Log in
-							</a>
+							<a href="{{ path('app_login') }}">Already have an account? Log in</a>
 						</div>
 					</form>
 				</div>

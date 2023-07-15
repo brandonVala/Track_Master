@@ -24,3 +24,4 @@ register:
 map:
     path: /map
     controller: App\Controller\MapController::index
+

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Entity\Admin;
@@ -8,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -30,6 +32,9 @@ class RegistrationFormType extends AbstractType
                     new NotBlank([
                         'message' => 'Please enter your email',
                     ]),
+                    new Email([
+                        'message' => 'Please enter a valid email address',
+                    ]),
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
@@ -49,12 +54,20 @@ class RegistrationFormType extends AbstractType
             ->add('phoneNumber', TextType::class, [
                 'label' => 'Phone Number',
                 'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter your phone number',
+                    ]),
+                ],
+            ])
+            ->add('areaOfResponsibility', TextType::class, [
+                'label' => 'Area of Responsibility',
+                'required' => false,
             ])
             ->add('isAdmin', CheckboxType::class, [
                 'label' => 'Is Admin',
                 'required' => false,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

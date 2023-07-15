@@ -272,6 +272,9 @@ integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" /
                         for (location of data['locations']) {
                             myMarker = L.marker([location.latitude, location.longitude], {
                                 title: location.id,
+                                icon: L.icon,
+                                iconUrl: '{{ asset('img/app/marker.png') }}',
+
                             });
                             myLayer.addLayer(myMarker);
                         }

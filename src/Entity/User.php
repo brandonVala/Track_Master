@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -8,12 +9,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
-// Importaciones adicionales
-use App\Entity\Admin;
-use App\Entity\Location;
-use App\Entity\Notification;
-use App\Entity\Geofence;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -31,16 +27,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="The name field is required.")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="The email field is required.")
+     * @Assert\Email(message="The email must be a valid email address.")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="The password field is required.")
+     * @Assert\Length(min=6, minMessage="The password must be at least 6 characters long.")
      */
     private $password;
 
@@ -166,7 +167,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 
     /**
      * @return Collection|Location[]

@@ -134,6 +134,11 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $isAdmin;
 
+    /**
+     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     */
+    private $userIdentifier;
+
     public function __construct()
     {
         $this->registeredAt = new \DateTime();
@@ -143,6 +148,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         $this->locations = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->isAdmin = true;
+        $this->userIdentifier = uniqid();
     }
 
     public function getId(): ?int
@@ -341,18 +347,6 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getIsAdmin(): bool
-    {
-        return $this->isAdmin;
-    }
-
-    public function setIsAdmin(bool $isAdmin): self
-    {
-        $this->isAdmin = $isAdmin;
-
-        return $this;
-    }
-
     /**
      * @return Collection|User[]
      */
@@ -489,6 +483,19 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->getEmail();
+    return $this->getEmail() ?? '';
+    }
+
+
+    public function getIsAdmin(): bool
+    {
+        return $this->isAdmin;
+    }
+
+    public function setIsAdmin(bool $isAdmin): self
+    {
+        $this->isAdmin = $isAdmin;
+
+        return $this;
     }
 }
