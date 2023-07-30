@@ -39,11 +39,10 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // Flash message
-            $session->getFlashBag()->add('success', 'Your account has been registered successfully. Please log in to continue.');
+            $this->addFlash('success', 'Account created successfully!');
+            // Redirigir a la página de inicio de sesión o a otra página
+            return $this->redirectToRoute('app_login');
 
-            // Redirect to login page
-            $loginUrl = $urlGenerator->generate('app_login');
-            return $this->redirect($loginUrl);
         }
 
         return $this->render('registration/register.html.twig', [

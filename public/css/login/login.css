@@ -83,9 +83,10 @@ a:hover {
     text-align: center;
     align-items: center;
     justify-content: center;
-    max-width: 900px; /* Cambiado el ancho máximo a 900px */
-    width: 100%; /* Ajustado el ancho al 100% */
+    max-width: 1200px; /* Hicimos más ancho el .container a 1200px */
+    width: 100%;
 }
+
 
 /* Estilos para el logotipo */
 .logo {
@@ -94,7 +95,6 @@ a:hover {
     width: 150px;
     height: 150px;
     margin: auto;
-    background-image: url("") no-repeat center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -125,12 +125,12 @@ a:hover {
     box-shadow: 0 1px 0 #fff inset;
     border: 1px solid #c4c6ca;
     margin: 0 auto;
-    padding: 25px 0 0;
+    padding: 25px 0;
     position: relative;
     text-align: center;
     text-shadow: 0 1px 0 #fff;
-    width: 400px;
-    max-width: 100%; /* Ajustado el ancho máximo al 100% */
+    width: 600px; /* Hicimos más ancho el #content a 600px */
+    max-width: 100%;
 }
 
 /* Estilos para el encabezado (h1) dentro del elemento con el ID content */
@@ -215,6 +215,8 @@ form {
     opacity: 1;
 }
 
+
+
 /* Estilos para las etiquetas de los campos */
 label {
     display: block;
@@ -235,46 +237,28 @@ label {
     box-sizing: border-box;
     font-size: 16px;
     color: #333;
-    background-color: #fff;
     transition: border-color 0.3s ease;
     /* Estilos adicionales */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(148, 88, 88, 0.1);
     outline: none;
     position: relative; /* Agrega posición relativa para alinear el icono */
 }
+input[type="checkbox"] + label:before {
+    border: 2px solid #26a69a;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+    content: "";
+    display: inline-block;
+    height: 16px;
+    margin-right: 10px;
+    position: relative;
+    top: 4px;
+    width: 16px;
+  }
 
-.input-field input[type="text"].valid,
-.input-field input[type="email"].valid,
-.input-field input[type="password"].valid {
-    border-color: green;
-}
-
-.input-field input[type="text"].invalid,
-.input-field input[type="email"].invalid,
-.input-field input[type="password"].invalid {
-    border-color: red;
-}
-
-.input-field input[type="text"] + i.material-icons.prefix,
-.input-field input[type="email"] + i.material-icons.prefix,
-.input-field input[type="password"] + i.material-icons.prefix {
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-    color: #999;
-}
-
-.input-field label {
-    color: #999;
-}
-
-.input-field input[type="text"]:focus + i.material-icons.prefix,
-.input-field input[type="email"]:focus + i.material-icons.prefix,
-.input-field input[type="password"]:focus + i.material-icons.prefix {
-    color: #555;
-}
-
+  input[type="checkbox"]:checked + label:before {
+    background-color: #26a69a;
+  }
 
 /* Estilos para el botón de registro */
 button[type="submit"] {
@@ -287,37 +271,34 @@ button[type="submit"] {
     text-align: center;
 }
 
-/* Estilos para el formulario de inicio de sesión */
-#login-form {
-    margin: 0 auto;
-    width: 300px;
+
+  /* Estilos para hacerlo adaptable en tamaños más pequeños */
+  @media (max-width: 600px) {
+    #login-form {
+      max-width: 100%;
+    }
+  }
+  
+
+/* Para pantallas más pequeñas que 600px */
+@media (max-width: 600px) {
+    /* Estilos específicos para pantallas pequeñas */
+    body {
+        font-size: 14px; /* Ejemplo: Reduce el tamaño del texto a 14px */
+        padding: 10px; /* Ejemplo: Agrega un espaciado interno de 10px al cuerpo */
+        background-color: #f2f2f2; /* Ejemplo: Cambia el color de fondo del cuerpo */
+    }
+
+    /* Puedes seguir agregando estilos adicionales específicos para pantallas pequeñas aquí */
 }
 
-#login-form h2 {
-    background-color: #f95252;
-    color: #ffffff;
-    font-size: 20px;
-    padding: 10px;
-    text-align: center;
-}
+/* Para pantallas más pequeñas que 400px */
+@media (max-width: 400px) {
+    /* Estilos específicos para pantallas muy pequeñas */
+    body {
+        font-size: 12px; /* Ejemplo: Reduce el tamaño del texto a 12px */
+        padding: 5px; /* Ejemplo: Agrega un espaciado interno de 5px al cuerpo */
+        background-color: #eaeaea; /* Ejemplo: Cambia el color de fondo del cuerpo */
+    }
 
-#login-form .form-group {
-    margin-bottom: 15px;
-}
-
-#login-form .form-group input {
-    height: 30px;
-    width: 100%;
-    padding: 5px;
-}
-
-#login-form .form-group label {
-    color: #555555;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-#login-form .form-group a {
-    color: #888888;
-    font-size: 12px;
 }

@@ -67,6 +67,10 @@ class RegistrationFormType extends AbstractType
             ->add('isAdmin', CheckboxType::class, [
                 'label' => 'Is Admin',
                 'required' => false,
+                'attr' => [
+                    'class' => 'filled-in',
+                    'checked' => 'checked',
+                ],
             ]);
     }
 
