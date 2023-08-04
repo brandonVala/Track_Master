@@ -35,6 +35,18 @@
           {{ app.session.flashBag.get('success')[0] }}
         </div>
       {% endif %}
+      {% if error is defined %}
+        <script>
+            // Función para mostrar una alerta con el mensaje de error
+            const showErrorAlert = (errorMessage) => {
+                alert(errorMessage); // O usa algún tipo de popup personalizado
+            };
+            
+            // Mostrar el mensaje de error en una alerta
+            showErrorAlert('{{ error }}');
+        </script>
+    {% endif %}
+
       <div id="form" style="margin-bottom: 20px;">
   {{ form_errors(registrationForm) }}
   <form method="post" action="{{ path('app_register') }}">
