@@ -55,10 +55,11 @@ class UserRegistrationFormType extends AbstractType
                     'Administrator' => 'ROLE_ADMIN',
                 ],
                 'expanded' => true, // Mostrar como radio button
-                'multiple' => false, // Permite seleccionar solo una opción
+                'multiple' => true, // Permite seleccionar múltiples opciones
                 'required' => true,
-                'data' => 'ROLE_USER', // Valor predeterminado seleccionado
+                'data' => ['ROLE_USER'], // Valor predeterminado seleccionado (como array)
             ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

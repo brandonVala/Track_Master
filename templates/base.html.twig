@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head>    
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         {% block title %}
             Rastreo GPS
         {% endblock %}
     </title>
     {% block stylesheets %}
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
         <link rel="Shortcut Icon" type="image/x-icon" href="{{ asset('img/principal.png') }}"/>
         <link rel="stylesheet" href="{{ asset('css/vista/sweet-alert.css') }}">
         <link rel="stylesheet" href="{{ asset('css/vista/material-design-iconic-font.min.css') }}">
@@ -23,6 +25,7 @@
         <script src="{{ asset('js/vista/bootstrap.min.js') }}"></script>
         <script src="{{ asset('js/vista/jquery.mCustomScrollbar.concat.min.js') }}"></script>
         <script src="{{ asset('js/vista/main.js') }}"></script>
+
     {% endblock %}
 </head>
 <body>

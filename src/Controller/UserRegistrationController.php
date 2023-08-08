@@ -1,12 +1,13 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserRegistrationFormType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserRegistrationController extends AbstractController
@@ -14,41 +15,46 @@ class UserRegistrationController extends AbstractController
     /**
      * @Route("/user/registration", name="app_user_registration")
      */
-    public function registerUser(Request $request): Response
+    public function registerUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(UserRegistrationFormType::class, $user);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Verificar si el usuario actual tiene el rol de administrador
             if ($this->isGranted('ROLE_ADMIN')) {
-                // El usuario actual es un administrador, establecer el rol del nuevo usuario
                 $roles = $form->get('roles')->getData();
                 $user->setRoles([$roles]);
-
-                // Establecer la relación con el administrador que lo registró
                 $user->setAdmin($this->getUser());
             } else {
-                // El usuario actual no tiene permiso para registrar usuarios
                 $this->addFlash('error', 'You do not have permission to register new users.');
-                return $this->redirectToRoute('app_homepage'); // Redirigir a la página principal o a cualquier otra página.
+                return $this->redirectToRoute('app_homepage');
             }
 
-            // Resto del código para persistir el usuario y redireccionar
-            $entityManager = $this->getDoctrine()->getManager();
+            $user->setPassword(
+                $passwordHasher->hashPassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+
             $entityManager->persist($user);
             $entityManager->flush();
 
             $this->addFlash('success', 'User registered successfully.');
-
-            return $this->redirectToRoute('app_homepage'); // Redireccionar a la página principal, o donde desees enviar al usuario después del registro.
+            return $this->redirectToRoute('app_lista_user');
         }
 
         return $this->render('user_registration/index.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-}
 
+    /**
+     * @Route("/admin_register", name="app_admin_register")
+     */
+    public function adminRegister(): Response
+    {
+        return $this->render('user_registration/admin_register.html.twig');
+    }
+}

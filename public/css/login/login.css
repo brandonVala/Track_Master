@@ -1,3 +1,4 @@
+
 /* Estilos GENERALES */
 body {
     background-size: cover;
@@ -189,21 +190,21 @@ a:hover {
 }
 
 #content:after {
-    -webkit-transform: rotate(2deg);
-    -moz-transform: rotate(2deg);
-    -ms-transform: rotate(2deg);
-    -o-transform: rotate(2deg);
-    transform: rotate(2deg);
+    -webkit-transform: rotate(2deg); /* Prefijo para navegadores basados en WebKit */
+    -moz-transform: rotate(2deg); /* Prefijo para navegadores basados en Gecko */
+    -ms-transform: rotate(2deg); /* Prefijo para Internet Explorer 9 y versiones anteriores */
+    -o-transform: rotate(2deg); /* Prefijo para Opera */
+    transform: rotate(2deg); /* Versión estándar de la propiedad */
     top: 0;
     z-index: -1;
 }
 
 #content:before {
-    -webkit-transform: rotate(-3deg);
-    -moz-transform: rotate(-3deg);
-    -ms-transform: rotate(-3deg);
-    -o-transform: rotate(-3deg);
-    transform: rotate(-3deg);
+    -webkit-transform: rotate(-3deg); /* Prefijo para navegadores basados en WebKit */
+    -moz-transform: rotate(-3deg); /* Prefijo para navegadores basados en Gecko */
+    -ms-transform: rotate(-3deg); /* Prefijo para Internet Explorer 9 y versiones anteriores */
+    -o-transform: rotate(-3deg); /* Prefijo para Opera */
+    transform: rotate(-3deg); /* Versión estándar de la propiedad */
     top: 0;
     z-index: -2;
 }

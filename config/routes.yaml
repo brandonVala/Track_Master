@@ -28,3 +28,12 @@ map:
 app_user_registration:
     path: /user/registration
     controller: App\Controller\UserRegistrationController::registerUser
+
+app_admin_register:
+    path: /admin_register
+    controller: App\Controller\UserRegistrationController::adminRegister
+
+admin_users:
+    path: /admin/users
+    controller: App\Controller\AdminUserController::usersList
+    methods: [GET]

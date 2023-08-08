@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Track Admin Map
+    Track  Map
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     <!-- Agregar contenido adicional a los css -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
         integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
 
@@ -32,9 +33,9 @@
                 </div>
                 <ul class="list-unstyled">
                     <li>
-                        <a href="category.html">
+                        <a href="{{ path('admin_users') }}">
                             <i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>
-                            &nbsp;&nbsp; Nueva categoría
+                            &nbsp;&nbsp; User List
                         </a>
                     </li>
                 </ul>
@@ -47,13 +48,13 @@
                 </div>
                 <ul class="list-unstyled">
                     <li>
-                        <a href="admin.html">
+                        <a href="{{ path('app_admin_register') }}">
                             <i class="zmdi zmdi-face zmdi-hc-fw"></i>
                             &nbsp;&nbsp; Nuevo administrador
                         </a>
                     </li>
                     <li>
-                        <a href="admin.html">
+                        <a href="{{ path('app_user_registration') }}">
                             <i class="zmdi zmdi-face zmdi-hc-fw"></i>
                             &nbsp;&nbsp; Nuevo Usuario
                         </a>
@@ -61,7 +62,7 @@
                 </ul>
             </li>
             <li>
-                <a href="report.html">
+                <a href="">
                     <i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>
                     &nbsp;&nbsp; Reportes y estadísticas
                 </a>
@@ -112,7 +113,7 @@
     {{ parent() }}
     <!-- Agregar contenido adicional al bloque container si es necesario -->
     <div class="container custom-header">
-        <h1 class="custom-title">Sistema de Rastreo <small>Administración</small></h1>
+        <h1 class="custom-title">TRACK <small>Administración</small></h1>
     </div>
     <!--DIV MAPA_-->
     <div id="myMap" class="map-container"></div>
@@ -189,81 +190,99 @@
             });
         });
     </script>
+    
 <script>
-    let myMap;
-    let myLayer;
-    let drawnItems;
+        let myMap;
+        let myLayer;
+        let drawnItems;
+        let hasLocation = false; // Variable para verificar si ya se ha encontrado la ubicación
+        let updateInterval; // Variable para almacenar el identificador del intervalo
 
-    renderMapa();
+        renderMapa();
 
-    function renderMapa() {
-        myMap = L.map('myMap').setView([19.45992, -97.6742], 16);
+        function renderMapa() {
+            myMap = L.map('myMap').setView([19.45992, -97.6742], 16);
 
-        var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        });
-        osm.addTo(myMap);
+            var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            });
+            osm.addTo(myMap);
 
-        myMap.on('locationfound', (e) => console.log('found', e));
+            myMap.on('locationfound', (e) => console.log('found', e));
 
-        myMap.locate();
+            myMap.locate();
 
-        drawnItems = new L.FeatureGroup();
-        myMap.addLayer(drawnItems);
+            drawnItems = new L.FeatureGroup();
+            myMap.addLayer(drawnItems);
 
-        var drawControl = new L.Control.Draw({
-            edit: {
-                featureGroup: drawnItems,
-                remove: true
-            },
-            draw: {
-                polygon: {
-                    allowIntersection: false,
-                    drawError: {
-                        color: '#b00b00',
-                        timeout: 1000
-                    },
-                    shapeOptions: {
-                        color: '#3388ff'
-                    },
-                    showArea: true
+            var drawControl = new L.Control.Draw({
+                edit: {
+                    featureGroup: drawnItems,
+                    remove: true
                 },
-                polyline: false,
-                rectangle: false,
-                circle: false,
-                marker: false
-            }
-        });
-        myMap.addControl(drawControl);
+                draw: {
+                    polygon: {
+                        allowIntersection: false,
+                        drawError: {
+                            color: '#b00b00',
+                            timeout: 1000
+                        },
+                        shapeOptions: {
+                            color: '#3388ff'
+                        },
+                        showArea: true
+                    },
+                    polyline: false,
+                    rectangle: false,
+                    circle: false,
+                    marker: false
+                }
+            });
+            myMap.addControl(drawControl);
 
-        myMap.on(L.Draw.Event.CREATED, function (e) {
-            var layer = e.layer;
-            drawnItems.addLayer(layer);
-            console.log(layer.toGeoJSON());
-        });
-
-        myMap.on('draw:edited', function (e) {
-            var layers = e.layers;
-            layers.eachLayer(function (layer) {
+            myMap.on(L.Draw.Event.CREATED, function (e) {
+                var layer = e.layer;
+                drawnItems.addLayer(layer);
                 console.log(layer.toGeoJSON());
             });
-        });
 
-        myMap.on('draw:deleted', function (e) {
-            var layers = e.layers;
-            layers.eachLayer(function (layer) {
-                console.log(layer.toGeoJSON());
+            myMap.on('draw:edited', function (e) {
+                var layers = e.layers;
+                layers.eachLayer(function (layer) {
+                    console.log(layer.toGeoJSON());
+                });
             });
-        });
 
-        function update() {
-            myLayer = L.layerGroup();
-            setInterval(function () {
-                myLayer.clearLayers();
+            myMap.on('draw:deleted', function (e) {
+                var layers = e.layers;
+                layers.eachLayer(function (layer) {
+                    console.log(layer.toGeoJSON());
+                });
+            });
+
+            function update() {
+                // Si ya se encontró la ubicación, detener el intervalo
+                if (hasLocation) {
+                    clearInterval(updateInterval);
+                    return;
+                }
+
+                myLayer = L.layerGroup();
                 fetch('/locations')
-                    .then((response) => response.json())
+                    .then((response) => {
+                        // Verificar si la respuesta del servidor fue exitosa
+                        if (!response.ok) {
+                            throw new Error('Error al obtener los datos de ubicación');
+                        }
+                        return response.json();
+                    })
                     .then((data) => {
+                        // Verificar si el JSON recibido es válido
+                        if (!data || !data['locations'] || !Array.isArray(data['locations'])) {
+                            throw new Error('Respuesta del servidor inválida');
+                        }
+
                         for (location of data['locations']) {
                             myMarker = L.marker([location.latitude, location.longitude], {
                                 title: location.id,
@@ -273,17 +292,28 @@
                             myLayer.addLayer(myMarker);
                         }
                         myLayer.addTo(myMap);
+                        hasLocation = true; // Ubicación encontrada, establecer la variable en true
+                    })
+                    .catch((error) => {
+                        // Mostrar mensajes de error adecuados
+                        console.error('Error en la solicitud:', error.message);
+                        // Aquí puedes mostrar un mensaje en una interfaz de usuario o realizar otras acciones para manejar el error.
                     });
-            }, 2000);
+            }
+
+            // Ejecutar la primera actualización
+            update();
+
+            // Ejecutar la actualización cada dos segundos hasta que se encuentre la ubicación
+            updateInterval = setInterval(update, 2000);
         }
-        update();
-    }
 
-    // Deshabilitar el zoom con el scroll del mouse
-    myMap.scrollWheelZoom.disable();
+        // Deshabilitar el zoom con el scroll del mouse
+        myMap.scrollWheelZoom.disable();
 
-    // Deshabilitar el zoom con el touchpad
-    myMap.touchZoom.disable();
-</script>
+        // Deshabilitar el zoom con el touchpad
+        myMap.touchZoom.disable();
+    </script>
+
 
 {% endblock %}

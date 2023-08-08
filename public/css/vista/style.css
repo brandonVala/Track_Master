@@ -5,7 +5,6 @@ body {
   padding: 0;
   width: 100%;
   font-size: 16px;
-  font-family: "Parrafos" !important;
   background-color: #fff;
 }
 .media-hover {
@@ -16,7 +15,6 @@ body {
   background-color: #f5f5f5;
 }
 .all-tittles{
-  font-family: "Titulos" !important;
   text-decoration: underline; /* Subrayado */
   text-transform: uppercase; /* Mayúsculas */
 }
